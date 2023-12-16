@@ -21,8 +21,15 @@ This project implements the following functionalities:
     login_for_access_token() ->  generates the acces token for the authentication of the user
 
 - Feature 2: Create password.
+    createPassword(password: Password, current_user: user_dependency) -> Creates a password for the current user
+
 - Feature 3: Read.
+    getPasswords(current_user: user_dependency) -> Obtains all the passwords of the current user
+
 - Feature 4: Uptade.
+    updatePassword(id_password: int, password: Password, current_user: user_dependency) -> updates a selected password
+    
 - Feature 5: Delete.
+    deletePassword(id_password: int, current_user: user_dependency) -> Deletes a selected password.
 
 """
