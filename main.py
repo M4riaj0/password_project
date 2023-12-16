@@ -5,6 +5,7 @@ from config.database import engine, Base
 from typing import Annotated
 
 from routers.auth import auth_router
+from routers.passwords import password_router
 from middlewares.auth import get_current_user
 
 app = FastAPI()
@@ -12,6 +13,7 @@ app.title = "Password Generator"
 app.version = "0.0.1"
 
 app.include_router(auth_router)
+app.include_router(password_router)
 Base.metadata.create_all(bind=engine)
 
 user_dependency = Annotated[dict, Depends(get_current_user)]

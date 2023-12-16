@@ -9,12 +9,12 @@ from models.user import User as UserModel
 
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
-def authenticate_user(username: str, password: str):
+def authenticate_user(username: str, password: str, verify_password: bool):
     db = Session()
     user = db.query(UserModel).filter(UserModel.username == username).first()
     if not user:
         return False
-    if password != user.password:
+    if (password != user.password) and verify_password:
         return False
     return {"id_user": user.id_user ,"username": user.username, "password": user.password}
 
