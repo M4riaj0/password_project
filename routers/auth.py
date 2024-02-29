@@ -18,6 +18,7 @@ auth_router = APIRouter(
 
 @auth_router.post("/register", tags=['auth'],response_model=List[User], status_code=201)
 def register_user(user: User):
+    print('user: ', user)
     password = password_generator(user)
     new_user = authenticate_user(user.username, None, False)
     if new_user:
@@ -27,7 +28,8 @@ def register_user(user: User):
     new_user = UserModel(** new_user)
     db.add(new_user)
     db.commit()
-    return JSONResponse(content={"message": f"User registered, your password is: {password['password']}"}, status_code=201)
+    message = f"User registered, your password is: {password}"
+    return JSONResponse(content={"message": message, "password": password}, status_code=201)
 
 @auth_router.post("/login", tags=['auth'], response_model=Token, status_code=200)
 async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):

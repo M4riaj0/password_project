@@ -32,11 +32,12 @@ def createPassword(password: Password, current_user: user_dependency):
     db.commit()
     return JSONResponse(content={"message": f"password created, password: {password}"}, status_code=201)
 
-@password_router.put("/edit/{id}", tags=['password'])
-def updatePassword(id_password: int, password: Password, current_user: user_dependency) -> dict:
+@password_router.put("/edit", tags=['password'])
+def updatePassword(id_password: int, password: Password, current_user: user_dependency)-> dict:
+    print("Entraaaa:::", id_password, password, current_user)
     db = Session()
-    print("user edit: " , current_user)
     result = db.query(PasswordModel).filter((PasswordModel.id_password == id_password) & (PasswordModel.id_user == current_user["current_id_user"])).first()
+    print("result:::", result)
     if not result:
         return JSONResponse(content={"message": "Password not found"}, status_code=404)
     password = password_generator(password)
@@ -45,9 +46,9 @@ def updatePassword(id_password: int, password: Password, current_user: user_depe
     result.password = password
     db.add(result)
     db.commit()
-    return JSONResponse(content={"message": f"Password updated, new password: {password}"}, status_code=200)
+    return JSONResponse(content={"message": f"Password updated, new_password: {password}"}, status_code=200)
 
-@password_router.delete("/delete/{id}", tags=['password'], response_model=dict)
+@password_router.delete("/delete", tags=['password'], response_model=dict)
 def deletePassword(id_password: int, current_user: user_dependency) -> dict:
     db = Session()
     password = db.query(PasswordModel).filter((PasswordModel.id_password == id_password) & (PasswordModel.id_user == current_user["current_id_user"])).first()
